@@ -39,7 +39,7 @@ export default function MovieCard({movie}) {
         className={classes.media}
         image={movie.poster}
         title={movie.title}
-        onClick={()=>history.push('/movieDetails')}
+        onClick={()=>history.push(`/movieDetails/${movie.id}`,{movie:movie})}
       />
     </Card>
   );
