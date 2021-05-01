@@ -29,6 +29,7 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 export default function MovieCard({movie}) {
+  //console.log(movie,'moviemovie')
   const classes = useStyles();
   const history = useHistory();
 
