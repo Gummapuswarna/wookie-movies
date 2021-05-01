@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
 import IconButton from '@material-ui/core/IconButton';
@@ -7,6 +7,7 @@ import InputBase from '@material-ui/core/InputBase';
 import { fade, makeStyles } from '@material-ui/core/styles';
 import MenuIcon from '@material-ui/icons/Menu';
 import SearchIcon from '@material-ui/icons/Search';
+import {debounce} from 'lodash';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -62,9 +63,28 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export default function SearchAppBar() {
+export default function SearchAppBar({getSearchedData}) {
   const classes = useStyles();
-
+  const [searchVal, setSearchVal] = useState('')
+  const callSearchApi = (searchVal) =>{
+    fetch(`https://wookie.codesubmit.io/movies?q=${searchVal}`, {
+          method: 'GET',
+          headers: new Headers({
+              'Authorization': 'Bearer Wookie2021'
+          })
+      }).then(res => res.json())
+          .then(response => {
+            getSearchedData(response)
+            console.log(response)
+          })
+  }
+  useEffect(()=>{
+    searchVal !== '' && callSearchApi(searchVal)
+  },[searchVal])
+  const searchInputVal = (e) => {
+    console.log(e,'searchInputVal')
+    setSearchVal(e.target.value)
+  }
   return (
     <div className={classes.root}>
       <AppBar position="static">
@@ -91,6 +111,7 @@ export default function SearchAppBar() {
                 input: classes.inputInput,
               }}
               inputProps={{ 'aria-label': 'search' }}
+              onChange={(e)=>searchInputVal(e)}
             />
           </div>
         </Toolbar>

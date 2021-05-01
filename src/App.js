@@ -7,13 +7,18 @@ import {
   Switch,
   Route
 } from "react-router-dom";
+import { useState } from 'react';
 function App() {
+  const [searchedData,setSearchedData] = useState([])
+  const getSearchedData = (val) =>{
+    setSearchedData(val)
+  }
   return (
     <div className="App">
-      <SearchBar />
+      <SearchBar getSearchedData={getSearchedData}/>
       <Switch>
         <Route exact path="/">
-          <Dashboard />
+          <Dashboard searchedData={searchedData}/>
         </Route>
         <Route path="/movieDetails/:id">
           <MovieDetails />
